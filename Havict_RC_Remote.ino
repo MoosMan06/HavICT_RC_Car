@@ -8,9 +8,9 @@ int throttlePin = A2;
 int steeringPin = A0;
 int pushButton = A1;
 
-const byte address[6] = "00001";
+int transmission[3]; //transmission = {Throttle, Direction, Speed}
 
-int preciseSteering = 1;
+const byte address[6] = "00001";
 
 void setup() {
   // put your setup code here, to run once:
@@ -42,10 +42,8 @@ void loop() {
   Serial.print("Button:");
   Serial.println(button);
 
-  int transmission[4];
-
   // generating transmission array from inputs:
-  if (throttle < 495) {
+  if (throttle < 490) {
     transmission[1] = map(throttle, 0, 495, 255, 0);
     transmission[2] = -1;
   }
@@ -58,22 +56,14 @@ void loop() {
     transmission[2] = 0;
   }
 
-  if (button < 5) {
-    preciseSteering = preciseSteering / -1;
-    delay(200);
-  }
-  
-  if (preciseSteering > 0) {
-    // didn't have enough time to implement this :(
-  }
-  else if (preciseSteering < 0) {
-    // didn't have enough time to implement this :(
-  } 
+  transmission[3] = map(steering, 0, 1024, 50, 120);
+
   // transmitting:
-//  Serial.print(transmission[1]);
-//  Serial.print(" / ");
-//  Serial.print(transmission[2]);
-//  Serial.print(" / ");
-//  Serial.println(transmission[3]);
-//  radio.write(&transmission, sizeof(transmission));
+  Serial.print(transmission[1]);
+  Serial.print(" / ");
+  Serial.print(transmission[2]);
+  Serial.print(" / ");
+  Serial.println(transmission[3]);
+
+  radio.write(&transmission, sizeof(transmission));
 }
