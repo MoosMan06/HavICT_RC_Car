@@ -41,7 +41,7 @@ void loop() {
   Serial.print("Button:");
   Serial.println(button);
 
-  // generating transmission array from inputs:
+  // Generating transmission array from inputs:
   if (throttle < 490) {
     transmission[1] = map(throttle, 0, 495, 255, 0);
     transmission[2] = -1;
