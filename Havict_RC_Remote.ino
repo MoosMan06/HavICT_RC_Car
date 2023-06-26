@@ -12,8 +12,8 @@ int transmission[3]; //transmission = {Throttle, Direction, Speed}
 
 const byte address[6] = "00001";
 
+
 void setup() {
-  // put your setup code here, to run once:
   Serial.begin(9600);
 
   radio.begin();
