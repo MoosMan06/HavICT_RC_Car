@@ -12,7 +12,6 @@ int transmission[3]; //transmission = {Throttle, Direction, Speed}
 
 const byte address[6] = "00001";
 
-
 void setup() {
   Serial.begin(9600);
 
@@ -32,7 +31,7 @@ void loop() {
   int steering = analogRead(steeringPin);
   int button = analogRead(pushButton);
 
-  // Debugging:
+  // Debug info
   Serial.print("Throttle:");
   Serial.print(throttle);
   Serial.print(",");
@@ -58,12 +57,13 @@ void loop() {
 
   transmission[3] = map(steering, 0, 1024, 50, 120);
 
-  // transmitting:
+  // More debug info:
   Serial.print(transmission[1]);
   Serial.print(" / ");
   Serial.print(transmission[2]);
   Serial.print(" / ");
   Serial.println(transmission[3]);
 
+  // Transmitting:
   radio.write(&transmission, sizeof(transmission));
 }
