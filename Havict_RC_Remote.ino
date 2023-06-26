@@ -8,7 +8,7 @@ int throttlePin = A2;
 int steeringPin = A0;
 int pushButton = A1;
 
-int transmission[3]; //transmission = {Throttle, Direction, Speed}
+int message[3]; //message = {Throttle, Direction, Steering}
 
 const byte address[6] = "00001";
 
@@ -41,29 +41,29 @@ void loop() {
   Serial.print("Button:");
   Serial.println(button);
 
-  // Generating transmission array from inputs:
+  // Generating message array from inputs:
   if (throttle < 490) {
-    transmission[1] = map(throttle, 0, 495, 255, 0);
-    transmission[2] = -1;
+    message[0] = map(throttle, 0, 495, 255, 0);
+    message[1] = -1;
   }
   else if (throttle > 520) {
-    transmission[1] = map(throttle, 520, 1024, 0, 256);
-    transmission[2] = 1;
+    message[0] = map(throttle, 520, 1024, 0, 256);
+    message[1] = 1;
   }
   else {
-    transmission[1] = 0;
-    transmission[2] = 0;
+    message[0] = 0;
+    message[1] = 0;
   }
 
-  transmission[3] = map(steering, 0, 1024, 50, 120);
+  message[2] = map(steering, 0, 1024, 50, 120);
 
   // More debug info:
-  Serial.print(transmission[1]);
+  Serial.print(message[0]);
   Serial.print(" / ");
-  Serial.print(transmission[2]);
+  Serial.print(message[1]);
   Serial.print(" / ");
-  Serial.println(transmission[3]);
+  Serial.println(message[2]);
 
   // Transmitting:
-  radio.write(&transmission, sizeof(transmission));
+  radio.write(&message, sizeof(message));
 }
